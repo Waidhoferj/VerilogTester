@@ -1,17 +1,19 @@
 import sys
 
-def generateTests(data):
+def generateTests(data, input_count=None):
+    if input_count is None:
+        input_count = len(data) - 1
     data_header = data[0].strip().split(",")
-    inputs = data_header[:-1]
-    output = data_header[-1]
+    inputs = data_header[:input_count]
+    outputs = data_header[input_count:]
     tests = [createHeader(data_header)]
     for i, line in enumerate(data[1:]):
         values = line.strip().split(",")
         test_number = "//Test {}\n".format(i+1)
         input_vals = " ".join(["{} = {};".format(input, values[index]) for index, input in enumerate(inputs)]) + "\n"
         time_paused = "#10\n"
-        error_condition = 'if ({}!=={}) $display("Error'.format(output, values[-1])
-        error_output_1 = " ".join([ " {}:%b".format(input) for input in inputs]) +'",'
+        error_condition = "if (" + " || ".join(["{}!=={}".format(output, values[input_count + index]) for index, output in enumerate(outputs)]) + ') '
+        error_output_1 = '$display("Error'  + " ".join([ " {}:%b".format(input) for input in inputs]) +'",'
         error_output_2 = ",".join([input for input in inputs]) + ");\n"
         tests.append(test_number + input_vals + time_paused + error_condition + error_output_1 + error_output_2)
     tests.append('\n$display("Finished");\nend\nendmodule')
@@ -47,7 +49,13 @@ def main():
     except:
         print("Please provide a legitimate file name.")
         return
-    output_text = generateTests(table_data)
+    try:
+        input_count = sys.argv[2]
+        print("try")
+        output_text = generateTests(table_data, input_count)
+    except:
+        print("except")
+        output_text = generateTests(table_data)
     file_name = file.split(".")[0]
     
     
