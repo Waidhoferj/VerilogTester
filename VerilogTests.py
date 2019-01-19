@@ -1,9 +1,9 @@
 import sys
 
-def generateTests(data, input_count=None):
-    if input_count is None:
-        input_count = len(data) - 1
+def generateTests(data, input_count):
     data_header = data[0].strip().split(",")
+    if input_count is None:
+        input_count = len(data_header) - 1
     inputs = data_header[:input_count]
     outputs = data_header[input_count:]
     tests = [createHeader(data_header)]
@@ -42,6 +42,7 @@ def createHeader(header):
 
 
 def main():
+    input_count = None
     try:
         file = sys.argv[1]
         with open(file) as truth_table:
@@ -49,16 +50,10 @@ def main():
     except:
         print("Please provide a legitimate file name.")
         return
-    try:
-        input_count = sys.argv[2]
-        print("try")
-        output_text = generateTests(table_data, input_count)
-    except:
-        print("except")
-        output_text = generateTests(table_data)
+    if len(sys.argv) > 2 and sys.argv[2].isdigit():
+        input_count = int(sys.argv[2])
+    output_text = generateTests(table_data, input_count)
     file_name = file.split(".")[0]
-    
-    
     with open(file_name + "_tests.txt", "w+") as verilog_file:
         verilog_file.writelines(output_text)
     print("Tests created!\nFound in {}_tests.txt".format(file_name))    
