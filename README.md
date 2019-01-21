@@ -1,8 +1,19 @@
-Input: A CSV with the first row consisting of your inputs and outputs. Be sure that all of the rows under each I/0 are filled with values (1 or 0)
+#Verilog Tester
+Turn your truth tables into System Verilog simulation code.
 
-Output: fileName_tests.txt
-Copy the contents of the file into your sim doc below the module-name.You will have to replace Lab(number) with your project name.
-
-Command line: python3 VerilogTests.py file.csv
-
-PS you can only call on csv's in the VerilogTester file. :(
+##Quick Start
+1. Clone the repo:
+```
+git clone https://github.com/Waidhoferj/VerilogTester.git
+```
+2. Locate your truth table
+   You can put your truth table in the repo folder and call it with the file name. Otherwise you will have to provide the full file path. To get the path to your file, navigate to the file with the command line and type `pwd`. Take note of the number of inputs in your truth table.
+3. Create your tests! Use the terminal to navigate to your cloned repo and process the truth table with this command:
+   ```python3 VerilogTests.py [PATH/FILENAME] [NUMBER OF INPUTS (optional)] [SIM NAME (optional)]```
+4. Find your output in the same folder as your truth table.
+5. Copy the outputted text into your System Verilog Sim file
+   
+##Further Details
+  -  truth  table must be in a CSV format.
+  - If you don't specify the number of inputs, the program assumes that all but the rightmost column are inputs.
+  - With an unspecified simulation name, the tests will input **[Sim_Name ]** in the required locations.
